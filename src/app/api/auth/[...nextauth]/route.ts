@@ -1,11 +1,22 @@
-// pages/api/auth/[...nextauth].ts
+// src/app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/app/lib/prisma"; // ✅ Utilise ton fichier lib
 
-const prisma = new PrismaClient();
+console.log("Starting NextAuth", {
+  github: {
+    id: process.env.GITHUB_ID,
+    secret: process.env.GITHUB_SECRET,
+  },
+  google: {
+    id: process.env.GOOGLE_CLIENT_ID,
+    secret: process.env.GOOGLE_CLIENT_SECRET,
+  },
+  nextAuthSecret: process.env.NEXTAUTH_SECRET,
+  nextAuthUrl: process.env.NEXTAUTH_URL,
+});
 
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
